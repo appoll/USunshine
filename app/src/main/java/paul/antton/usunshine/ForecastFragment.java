@@ -1,5 +1,6 @@
 package paul.antton.usunshine;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -86,10 +87,10 @@ public  class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
 
         mForecastAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
 
         listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
@@ -118,14 +119,13 @@ public void onStart(){
 
         @Override
         protected void onPostExecute(String[] strings) {
+            if (isAdded()) {
+                if (strings != null) {
+                    mForecastAdapter.clear();
 
-            if (strings !=null)
-            {
-                mForecastAdapter.clear();
-
-                for (String dayForecastStr : strings)
-                {
-                    mForecastAdapter.add(dayForecastStr);
+                    for (String dayForecastStr : strings) {
+                        mForecastAdapter.add(dayForecastStr);
+                    }
                 }
             }
         }
@@ -242,12 +242,18 @@ public void onStart(){
      * Prepare the weather high/lows for presentation.
      */
     private String formatHighLows(double high, double low) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        Context context = getActivity().getApplicationContext();
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
 
         String unitType = sharedPrefs.getString(
                                             getString(R.string.pref_units_key),
                                             getString(R.string.pref_units_metric)
                                                 );
+
+
 
         if (unitType.equals(getString(R.string.pref_units_imperial)))
         {

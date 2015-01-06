@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,11 +32,14 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-
+    public ForecastFragment forecastFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+       super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ForecastFragment())
@@ -60,6 +64,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "DADADADADA", Toast.LENGTH_LONG).show();
             Intent intent = new Intent (this, SettingsActivity.class);
             startActivity(intent);
         }
@@ -91,8 +96,5 @@ public class MainActivity extends ActionBarActivity {
             Log.d("MAP_INTENT", "Couldn't call " + location + ", no ");
         }
     }
-    /**
-     * A placeholder fragment containing a simple view.
-     */
 
 }
