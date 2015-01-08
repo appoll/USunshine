@@ -29,11 +29,16 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".DetailActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="paul.antton.usunshine.MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="paul.antton.usunshine"
+            android:name="data.WeatherProvider" />
+
     </application>
 
 </manifest>
