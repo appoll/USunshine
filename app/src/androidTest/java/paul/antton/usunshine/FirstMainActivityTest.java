@@ -1,22 +1,9 @@
 package paul.antton.usunshine;
 
-import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 
 /**
  * Created by Paul's on 06-Jan-15.
@@ -44,7 +31,7 @@ public class FirstMainActivityTest
         setActivityInitialTouchMode(false);
 
         mMainActivity = getActivity();
-        mFrameLayout = (FrameLayout) mMainActivity.findViewById(R.id.container);
+        mFrameLayout = (FrameLayout) mMainActivity.findViewById(R.id.weather_detail_container);
         mListView = (ListView) mMainActivity.findViewById(R.id.listview_forecast);
 
       //  mForecastFragment = mMainActivity.forecastFragment;

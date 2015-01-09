@@ -1,26 +1,21 @@
 package paul.antton.usunshine;
 
+
+
 import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.content.Intent;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
+
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 
 
-import java.util.List;
+
+
 
 import data.WeatherContract;
 
@@ -106,4 +101,9 @@ public class SettingsActivity extends PreferenceActivity
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public Intent getParentActivityIntent() {
+        return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    }
 }

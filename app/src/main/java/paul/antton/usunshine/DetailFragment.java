@@ -38,6 +38,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private String mLocation;
     private String mForecast;
 
+    private WindControl mWindControl;
+
     private static final int DETAIL_LOADER = 0;
 
     private static final String[] FORECAST_COLUMNS = {
@@ -89,13 +91,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
         mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
         mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
+        mWindControl = (WindControl) rootView.findViewById(R.id.windmill);
         return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mLocation != null &&
+
+        Bundle arguments = getArguments();
+
+
+        if (arguments !=null && arguments.containsKey(DetailActivity.DATE_KEY) && mLocation != null &&
                 !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
@@ -129,9 +136,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+
+
         if (savedInstanceState != null) {
             mLocation = savedInstanceState.getString(LOCATION_KEY);
+        }
+
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey(DetailActivity.DATE_KEY))
+        {
+            getLoaderManager().initLoader(DETAIL_LOADER,null, this);
         }
         super.onActivityCreated(savedInstanceState);
     }
@@ -143,14 +157,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (intent == null || !intent.hasExtra(DetailActivity.DATE_KEY)) {
             return null;
         }
-        String forecastDate = intent.getStringExtra(DetailActivity.DATE_KEY);
+
 
         // Sort order:  Ascending, by date.
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATETEXT + " ASC";
 
+        String dateStr = getArguments().getString(DetailActivity.DATE_KEY);
+
         mLocation = Utility.getPreferredLocation(getActivity());
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                mLocation, forecastDate);
+                mLocation, dateStr);
         Log.v(LOG_TAG, weatherForLocationUri.toString());
 
         // Now create and return a CursorLoader that will take care of
@@ -214,6 +230,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mForecast = String.format("%s - %s - %s/%s", dateText, description, high, low);
 
             Log.v(LOG_TAG, "Forecast String: " + mForecast);
+
+
+            mWindControl.setDegrees(data.getFloat(
+                    data.getColumnIndex(WeatherEntry.COLUMN_DEGREES)));
+            mWindControl.setSpeed(data.getFloat(
+                    data.getColumnIndex(WeatherEntry.COLUMN_WIND_SPEED)));
+
 
             // If onCreateOptionsMenu has already happened, we need to update the share intent now.
             if (mShareActionProvider != null) {

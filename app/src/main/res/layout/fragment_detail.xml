@@ -99,6 +99,11 @@
         android:layout_height="wrap_content"
         android:text="1014" />
 
+    <paul.antton.usunshine.WindControl
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/windmill"
+        />
 
 
 
